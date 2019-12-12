@@ -19,15 +19,11 @@ class TasksController extends Controller
         $data = [];
         if (\Auth::check()) {
             $user = \Auth::user();
-            $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
-            
-            $data = [
-                'user' => $user,
-                'tasks' => $tasks,
-            ];
+
+            return view('tasks.index', [
+            'tasks' => $user->tasklists()->orderBy('created_at', 'desc')->paginate(10),
+            ]);               
         }
-        
-        return view('welcome', $data);     
     }
 
     /**
@@ -43,6 +39,7 @@ class TasksController extends Controller
         return view('tasks.create', [
             'task' => $task,
         ]);
+        return redirect('/');
     }
 
     /**
@@ -59,19 +56,13 @@ class TasksController extends Controller
             'status' => 'required|max:10',   // 追加            
         ]);
         
-        //$task = new Task;
-        //$task->content = $request->content;
-        //$task->status = $request->status;    // 追加
-        //$task->save();
-
-        //return redirect('/');
         
-        $request->user()->tasks()->create([
+        $request->user()->tasklists()->create([
             'content' => $request->content,
             'status' => $request->status
         ]);
 
-        return back();
+        return redirect('/');
         
     }
 
@@ -145,6 +136,6 @@ class TasksController extends Controller
             $task->delete();
         }
 
-        return back();
+        return redirect('/');
     }
 }

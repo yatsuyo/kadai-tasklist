@@ -29,7 +29,7 @@ class User extends Authenticatable
     
     public function tasklists()
     {
-        return $this->hasMany(Tasklist::class);
+        return $this->hasMany(Task::class);
     }
     
 }
