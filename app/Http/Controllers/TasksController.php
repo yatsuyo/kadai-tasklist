@@ -56,10 +56,10 @@ class TasksController extends Controller
             'status' => 'required|max:10',   // 追加            
         ]);
         
-        
         $request->user()->tasklists()->create([
             'content' => $request->content,
-            'status' => $request->status
+            'status' => $request->status,
+            'user_id' => $request->user
         ]);
 
         return redirect('/');
