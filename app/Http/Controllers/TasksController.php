@@ -21,7 +21,7 @@ class TasksController extends Controller
             $user = \Auth::user();
 
             return view('tasks.index', [
-            'tasks' => $user->tasklists()->orderBy('created_at', 'desc')->paginate(10),
+            'tasks' => $user->tasks()->orderBy('created_at', 'desc')->paginate(10),
             ]);               
         }
     }
@@ -56,7 +56,7 @@ class TasksController extends Controller
             'status' => 'required|max:10',   // 追加            
         ]);
         
-        $request->user()->tasklists()->create([
+        $request->user()->tasks()->create([
             'content' => $request->content,
             'status' => $request->status,
             'user_id' => $request->user
