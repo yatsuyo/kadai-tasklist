@@ -93,7 +93,7 @@ class TasksController extends Controller
     public function edit($id)
     {
         $task = Task::find($id);
-        $user = \Auth::user();
+        //$user = \Auth::user();
 
         if(\Auth::id() == $task->user_id){
             return view('tasks.edit', [
@@ -120,7 +120,7 @@ class TasksController extends Controller
         
         $task = Task::find($id);    
         if(\Auth::id() == $task->user_id){
-            $user = \Auth::user();  
+            //$user = \Auth::user();  
             $task->content = $request->content;
             $task->status = $request->status;    // 追加
             //$task->user_id = $task->user_id;
@@ -138,11 +138,11 @@ class TasksController extends Controller
     // deleteでtasks/idにアクセスされた場合の「削除処理」
     public function destroy($id)
     {
-        $task = \App\Task::find($id);
-        $user = \Auth::user();
+        $task = Task::find($id);
 
         if(\Auth::id() == $task->user_id){
-            $task-> $user->delete();
+            //var_dump($id);
+            $task->delete();
         }
         return redirect('/');
     }
