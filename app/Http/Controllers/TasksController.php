@@ -61,9 +61,7 @@ class TasksController extends Controller
             'status' => $request->status,
             'user_id' => $request->user
         ]);
-
         return redirect('/');
-        
     }
 
     /**
@@ -97,9 +95,9 @@ class TasksController extends Controller
         $task = Task::find($id);
         $user = \Auth::user();
 
-        if (\Auth::check()) {
+        if(\Auth::id() == $task->user_id){
             return view('tasks.edit', [
-                'task' => $user->tasks,
+                'task' => $task,
             ]);
         }
         return redirect('/');
@@ -120,12 +118,13 @@ class TasksController extends Controller
             'status' => 'required|max:10',   // 追加
         ]);
         
-        if (\Auth::check()) {
-            $user = \Auth::user();
-            $task = Task::find($id);
-            $task->$user->content = $request->content;
-            $task->$user->status = $request->status;    // 追加
-            $task->$user->save();
+        $task = Task::find($id);    
+        if(\Auth::id() == $task->user_id){
+            $user = \Auth::user();  
+            $task->content = $request->content;
+            $task->status = $request->status;    // 追加
+            //$task->user_id = $task->user_id;
+            $task->save();
         }
         return redirect('/');
     }
@@ -142,10 +141,9 @@ class TasksController extends Controller
         $task = \App\Task::find($id);
         $user = \Auth::user();
 
-        if (\Auth::id() === $task->user_id) {
+        if(\Auth::id() == $task->user_id){
             $task-> $user->delete();
         }
-
         return redirect('/');
     }
 }
